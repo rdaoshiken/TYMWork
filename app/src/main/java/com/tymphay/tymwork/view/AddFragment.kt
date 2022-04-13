@@ -10,17 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tymphay.tymwork.R
 import com.tymphay.tymwork.RecyclerViewAdapter
-import com.tymphay.tymwork.model.OperatorNumber
 import com.tymphay.tymwork.viewmodel.OperatorViewModel
+import kotlinx.android.synthetic.main.add_fragment.*
 
 class AddFragment : Fragment() {
 
-    var output = ""
     private lateinit var operatorViewModel: OperatorViewModel
-    private lateinit var operatorNumber: OperatorNumber
-
-    private var arrList: ArrayList<OperatorViewModel> = ArrayList()
-
     private lateinit var recyclerView: RecyclerView
 
     private val adapter by lazy { RecyclerViewAdapter() }
@@ -35,20 +30,14 @@ class AddFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-//        //Livedata:
-//        //通过ViewModelProvider创建operatorViewModel
-//        ViewModelProvider(this)
-//        operatorViewModel= ViewModelProvider(requireActivity()).get(OperatorViewModel::class.java)
-//        result_item.text=operatorViewModel.output .toString()
-
         return inflater.inflate(R.layout.add_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.add_recycler_view)
+        //RecyclerView:
+        recyclerView = add_recycler_view
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
@@ -58,10 +47,5 @@ class AddFragment : Fragment() {
                 operatorNumber.operator == "+"
             }
         }
-    }
-
-    private fun initResult() {
-//        operatorNumber=OperatorNumber(0,0)
-//        arrList.add(OperatorViewModel(operatorNumber ))
     }
 }

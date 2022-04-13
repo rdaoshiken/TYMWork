@@ -13,15 +13,14 @@ import kotlinx.android.synthetic.main.bottom_navbar.*
 
 class MainActivity : AppCompatActivity() {
 
-    var rvdapter: RecyclerViewAdapter? = null
-    var list: ArrayList<OperatorViewModel>? = ArrayList()
-
     private lateinit var operatorViewModel: OperatorViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         operatorViewModel = ViewModelProvider(this)[OperatorViewModel::class.java]
+
         //Fragment:
         //隐藏标题栏
         supportActionBar?.hide()
@@ -44,10 +43,6 @@ class MainActivity : AppCompatActivity() {
         bt_div.setOnClickListener{
             operatorViewModel.divide(et_input1.text.toString().toInt(),et_input2.text.toString().toInt())
             replace(DivideFragment())
-        }
-
-        bt_equal.setOnClickListener {
-
         }
     }
 

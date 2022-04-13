@@ -13,7 +13,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<ExamViewHolder>() {
     var list: List<OperatorNumber> = mutableListOf()
         set(value) {
             field = value
-            notifyDataSetChanged()
+            notifyDataSetChanged()  //刷新数据
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamViewHolder {

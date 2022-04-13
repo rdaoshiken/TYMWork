@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tymphay.tymwork.R
 import com.tymphay.tymwork.RecyclerViewAdapter
 import com.tymphay.tymwork.viewmodel.OperatorViewModel
+import kotlinx.android.synthetic.main.add_fragment.*
 
 class DivideFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var operatorViewModel: OperatorViewModel
+    private lateinit var recyclerView: RecyclerView
 
     private val adapter by lazy { RecyclerViewAdapter() }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +29,18 @@ class DivideFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.multiply_fragment,container,false)
+    ): View {
+        return inflater.inflate(R.layout.add_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.mul_recycle_view)
+
+        //RecyclerView:
+        recyclerView = add_recycler_view
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
+
         //设置观察
         operatorViewModel.output.observe(viewLifecycleOwner) {
             adapter.list = it.filter { operatorNumber->

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_config"
+    app:startDestination="@id/add_fragment">
+    //app:startDestination 默认显示一个fragment
+
+    //配置文件
+    //加法
+    <fragment
+        android:id="@+id/add_fragment"
+        android:name="com.tymphay.tymwork.view.AddFragment">
+    </fragment>
+
+    //减法
+    <fragment
+        android:id="@+id/sub_fragment"
+        android:name="com.tymphay.tymwork.view.SubtractionFragment">
+    </fragment>
+
+    //乘法
+    <fragment
+        android:id="@+id/mul_fragment"
+        android:name="com.tymphay.tymwork.view.MultiplyFragment">
+    </fragment>
+
+    //除法
+    <fragment
+        android:id="@+id/div_fragment"
+        android:name="com.tymphay.tymwork.view.DivideFragment">
+    </fragment>
+
+</navigation>

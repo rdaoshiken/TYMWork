@@ -14,24 +14,28 @@ class OperatorViewModel : ViewModel() {
     //加法
     fun add(num1: Int, num2: Int) {
         result.add(OperatorNumber(num1, num2, num1 + num2, "+"))
-        output.value = result
+        //output.value = result
+        output.postValue(result)
     }
 
     //减法
     fun subtraction(num1: Int, num2: Int) {
         result.add(OperatorNumber(num1, num2, num1- num2, "-"))
-        output.value = result
+      //  output.value = result
+        output.postValue(result)
     }
 
     //乘法
     fun multiply(num1: Int, num2: Int) {
         result.add(OperatorNumber(num1, num2, num1 * num2, "*"))
-        output.value = result
+        //output.value = result
+        output.postValue(result)
     }
 
     //除法
     fun divide(num1: Int, num2: Int) {
         result.add(OperatorNumber(num1, num2, num1 / num2, "÷"))
-        output.value = result
+       // output.value = result
+        output.postValue(result)
     }
 }

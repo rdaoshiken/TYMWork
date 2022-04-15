@@ -10,11 +10,17 @@ import kotlinx.android.synthetic.main.result_item.view.*
 
 class RecyclerViewAdapter : RecyclerView.Adapter<ExamViewHolder>() {
 
-    var list: List<OperatorNumber> = mutableListOf()
-        set(value) {
+    var list = mutableListOf<OperatorNumber>()
+
+    fun setRecyclerData(data:OperatorNumber){
+        list.add(data)
+        notifyDataSetChanged()  //刷新数据
+    }
+
+        /*set(value) {
             field = value
             notifyDataSetChanged()  //刷新数据
-        }
+        }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamViewHolder {
         return ExamViewHolder(

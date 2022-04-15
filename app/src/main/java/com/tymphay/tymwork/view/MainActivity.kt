@@ -26,29 +26,29 @@ class MainActivity : AppCompatActivity() {
 
         bt_add.setOnClickListener{
             operatorViewModel.add(et_input1.text.toString().toInt(),et_input2.text.toString().toInt())
-            //replace(AddFragment())
+            replace(AddFragment())
         }
 
         bt_sub.setOnClickListener{
             operatorViewModel.subtraction(et_input1.text.toString().toInt(),et_input2.text.toString().toInt())
-            //replace(SubtractionFragment())
+            replace(SubtractionFragment())
         }
 
         bt_mul.setOnClickListener{
             operatorViewModel.multiply(et_input1.text.toString().toInt(),et_input2.text.toString().toInt())
-           //replace(MultiplyFragment())
+           replace(MultiplyFragment())
         }
 
         bt_div.setOnClickListener{
             operatorViewModel.divide(et_input1.text.toString().toInt(),et_input2.text.toString().toInt())
-            //replace(DivideFragment())
+            replace(DivideFragment())
         }
     }
 
-   /* private fun replace(fragment: Fragment){
+    private fun replace(fragment: Fragment){
         val fragmentManager=supportFragmentManager
         val transaction=fragmentManager.beginTransaction()
         transaction.replace(R.id.content,fragment)
         transaction.commit()
-    }*/
+    }
 }

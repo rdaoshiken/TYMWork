@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tymphay.tymwork.R
 import com.tymphay.tymwork.RecyclerViewAdapter
+import com.tymphay.tymwork.model.OperatorNumber
 import com.tymphay.tymwork.viewmodel.OperatorViewModel
 
 class MultiplyFragment : Fragment() {
@@ -42,7 +43,7 @@ class MultiplyFragment : Fragment() {
         operatorViewModel.output.observe(viewLifecycleOwner) {
             adapter.list = it.filter { operatorNumber->
                 operatorNumber.operator == "*"
-            }
+            } as MutableList<OperatorNumber>
         }
     }
 }

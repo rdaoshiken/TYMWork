@@ -40,11 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:orientation="vertical">
 
         <ProgressBar
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/progressbar" />
 
@@ -73,6 +74,7 @@
         android:layout_height="50dp"
         android:background="?android:attr/selectableItemBackground"
         android:gravity="center"
+        android:onClick="scanBluetooth"
         android:text="扫描蓝牙" />
 
 </LinearLayout>

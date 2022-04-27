@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.example.mybluetooth.R
 import com.example.mybluetooth.adapter.BleDeviceAdapter
 import com.example.mybluetooth.bean.BleDevice
 import com.example.mybluetooth.databinding.ActivityMainBinding
@@ -32,8 +31,6 @@ class MainActivity : AppCompatActivity() {
     private var addressList: MutableList<String> = ArrayList()
     //当前是否扫描
     private var isScanning = false
-
-
     //视图绑定
     private lateinit var binding: ActivityMainBinding
 
@@ -42,8 +39,6 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) showMsg(if (defaultAdapter.isEnabled) "蓝牙已打开" else "蓝牙未打开")
         }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +51,6 @@ class MainActivity : AppCompatActivity() {
         initView()
     }
 
-
-
     //检查Android版本
     private fun checkAndroidVersion() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermission() else openBluetooth()
@@ -66,6 +59,7 @@ class MainActivity : AppCompatActivity() {
     private var defaultAdapter = BluetoothAdapter.getDefaultAdapter()
     //打开蓝牙
     private fun openBluetooth() = defaultAdapter.let {
+        //如果蓝牙未打开,则通过Intent去打开系统蓝牙
         if (it.isEnabled) showMsg("蓝牙已打开，可以开始扫描设备了") else activityResult.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
     }
 
@@ -104,22 +98,27 @@ class MainActivity : AppCompatActivity() {
         bleAdapter.notifyDataSetChanged()
     }
 
-
     //页面初始化
     private fun initView() {
+        //适配器:
         bleAdapter = BleDeviceAdapter(mList).apply {
             setOnItemClickListener { _, _, position ->
                 stopScan()
                 val device = mList[position].device
-                //跳转页面
+                //传递数据
+                //将MainActivity中点击的Device传递到ConnectBluetoothActivity中
+                startActivity(Intent(this@MainActivity,ConnectBluetoothActivity::class.java)
+                    .putExtra("device",device))
             }
             animationEnable = true
             setAnimationWithDefault(BaseQuickAdapter.AnimationType.SlideInRight)
         }
+        //RecyclerView:
         binding.rvDevice.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = bleAdapter
         }
+        //浮动按钮的点击事件：
         //扫描蓝牙
         binding.fabAdd.setOnClickListener { if (isScanning) stopScan() else scan() }
     }

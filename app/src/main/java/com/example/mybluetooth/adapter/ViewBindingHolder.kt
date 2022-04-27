@@ -8,8 +8,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import java.lang.reflect.ParameterizedType
 
+//通过ViewBinding去获取view:
+
+//对BaseViewHolder进行覆写，构造类时传入一个ViewBinding
 class ViewBindingHolder<VB : ViewBinding>(val vb: VB, view: View) : BaseViewHolder(view)
 
+//ViewBindingAdapter中传入两个参数:ViewBinding和data
 abstract class ViewBindingAdapter<VB : ViewBinding, T>(data: MutableList<T>? = null) :
     BaseQuickAdapter<T, ViewBindingHolder<VB>>(0, data) {
     //重写返回自定义 ViewHolder

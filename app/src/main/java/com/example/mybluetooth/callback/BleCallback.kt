@@ -1,9 +1,7 @@
 package com.example.mybluetooth.callback
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothGatt
-import android.bluetooth.BluetoothGattCallback
-import android.bluetooth.BluetoothProfile
+import android.bluetooth.*
 import android.util.Log
 import com.example.mybluetooth.utils.BleHelper
 
@@ -37,10 +35,25 @@ class BleCallback:BluetoothGattCallback() {
         )
     }
 
+  /* //获取MtuSize回调
+    @SuppressLint("MissingPermission")
+    override fun onMtuChanged(gatt: BluetoothGatt, mtu: Int, status: Int) {
+        uiCallback.state("获取到MtuSize：$mtu")
+        //发现服务
+        gatt.discoverServices()
+    }*/
+
+    //发现服务回调
+    @SuppressLint("MissingPermission")
+    override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
+        uiCallback.state(if (!BleHelper.enableIndicateNotification(gatt)) { gatt.disconnect()
+            "开启通知属性异常"
+        } else "发现了服务")
+    }
+
     //UI回调
     interface UiCallback{
         //当前Ble的状态信息
         fun state(state:String)
     }
-
 }

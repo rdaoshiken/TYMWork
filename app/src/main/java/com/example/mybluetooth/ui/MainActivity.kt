@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -105,10 +106,12 @@ class MainActivity : AppCompatActivity() {
             setOnItemClickListener { _, _, position ->
                 stopScan()
                 val device = mList[position].device
+
                 //传递数据
-                //将MainActivity中点击的Device传递到ConnectBluetoothActivity中
+                //将MainActivity中点击的device传递到ConnectBluetoothActivity中
                 startActivity(Intent(this@MainActivity,ConnectBluetoothActivity::class.java)
                     .putExtra("device",device))
+
             }
             animationEnable = true
             setAnimationWithDefault(BaseQuickAdapter.AnimationType.SlideInRight)
@@ -151,8 +154,6 @@ class MainActivity : AppCompatActivity() {
             binding.fabAdd.text = "开始扫描"
         }
     }
-
-
 
 }
 

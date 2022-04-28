@@ -4,12 +4,6 @@ import java.util.*
 
 object ByteUtils {
 
-    /**
-     * Convert hex string to byte[]
-     *
-     * @param hexString the hex string
-     * @return byte[]
-     */
     fun hexStringToBytes(hexString: String): ByteArray {
         val hexString = hexString.uppercase(Locale.getDefault())
         val length = hexString.length / 2
@@ -22,9 +16,6 @@ object ByteUtils {
         return byteArrayResult
     }
 
-    /**
-     * Convert byte[] to string
-     */
     fun bytesToHexString(src: ByteArray): String {
         val stringBuilder = StringBuilder("")
         for (i in src.indices) {
@@ -35,12 +26,6 @@ object ByteUtils {
         return stringBuilder.toString()
     }
 
-    /**
-     * Convert char to byte
-     *
-     * @param c char
-     * @return byte
-     */
     private fun charToByte(c: Char): Byte = "0123456789ABCDEF".indexOf(c).toByte()
 
 }

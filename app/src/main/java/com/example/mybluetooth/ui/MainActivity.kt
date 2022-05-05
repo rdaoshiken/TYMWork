@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,10 +52,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     //检查Android版本
+    //6.0及以上的动态请求权限,6.0以下则判断蓝牙是否打开
     private fun checkAndroidVersion() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) requestPermission() else openBluetooth()
 
-    //默认蓝牙适配器
+    //获取蓝牙适配器
     private var defaultAdapter = BluetoothAdapter.getDefaultAdapter()
     //打开蓝牙
     private fun openBluetooth() = defaultAdapter.let {
@@ -103,15 +103,14 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         //适配器:
         bleAdapter = BleDeviceAdapter(mList).apply {
+            //设置列表的点击事件
             setOnItemClickListener { _, _, position ->
                 stopScan()
                 val device = mList[position].device
-
-                //传递数据
+                //跳转页面,传递数据:
                 //将MainActivity中点击的device传递到ConnectBluetoothActivity中
                 startActivity(Intent(this@MainActivity,ConnectBluetoothActivity::class.java)
                     .putExtra("device",device))
-
             }
             animationEnable = true
             setAnimationWithDefault(BaseQuickAdapter.AnimationType.SlideInRight)

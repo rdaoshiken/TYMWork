@@ -15,6 +15,12 @@ class BleCallback:BluetoothGattCallback() {
         this.uiCallback = uiCallback
     }
 
+    //UI回调
+    interface UiCallback{
+        //当前Ble的状态信息
+        fun state(state:String)
+    }
+
     //连接状态回调
     @SuppressLint("MissingPermission")
     override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
@@ -24,36 +30,31 @@ class BleCallback:BluetoothGattCallback() {
         }
         uiCallback.state(
             when (newState) {
-                BluetoothProfile.STATE_CONNECTED -> {
-                    //获取MtuSize
+                BluetoothProfile.STATE_CONNECTED -> {   //连接成功
+                    //获取MtuSize,触发onMtuChanged回调
                     gatt.requestMtu(512)
                     "连接成功"
                 }
-                BluetoothProfile.STATE_DISCONNECTED -> "断开连接"
+                BluetoothProfile.STATE_DISCONNECTED -> "断开连接"    //断开连接
                 else -> "onConnectionStateChange: $status"
             }
         )
     }
 
-  /* //获取MtuSize回调
+    //获取MtuSize回调
     @SuppressLint("MissingPermission")
-    override fun onMtuChanged(gatt: BluetoothGatt, mtu: Int, status: Int) {
-        uiCallback.state("获取到MtuSize：$mtu")
-        //发现服务
-        gatt.discoverServices()
-    }*/
-
-    //发现服务回调
-    @SuppressLint("MissingPermission")
-    override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
-        uiCallback.state(if (!BleHelper.enableIndicateNotification(gatt)) { gatt.disconnect()
-            "开启通知属性异常"
-        } else "发现了服务")
+    override fun onMtuChanged(gatt: BluetoothGatt?, mtu: Int, status: Int) {
+        uiCallback.state("获取到MtuSize:$mtu")
+        //发现服务,触发onServicesDiscovered回调
+        gatt?.discoverServices()
     }
 
-    //UI回调
-    interface UiCallback{
-        //当前Ble的状态信息
-        fun state(state:String)
+    //发现服务回调,打开通知开关
+    @SuppressLint("MissingPermission")
+    override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
+        uiCallback.state(if (!BleHelper.enableIndicateNotification(gatt)) {
+            gatt.disconnect()
+            "开启通知属性异常"
+        } else "发现了服务 : $status")
     }
 }

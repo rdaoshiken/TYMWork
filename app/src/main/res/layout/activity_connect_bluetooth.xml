@@ -22,6 +22,4 @@
             android:gravity="center" />
     </ScrollView>
 
-
-
 </LinearLayout>

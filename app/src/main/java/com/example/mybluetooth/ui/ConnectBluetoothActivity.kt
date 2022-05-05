@@ -25,6 +25,7 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
         binding= ActivityConnectBluetoothBinding.inflate(layoutInflater)  //绑定视图
         setContentView(binding.root)
 
+        //页面初始化
         initView()
     }
 
@@ -35,8 +36,9 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
             title = "Connection"
             setDisplayHomeAsUpEnabled(true)
         }
+        //获取从上个页面传递过来的设备
         val device = intent.getParcelableExtra<BluetoothDevice>("device")
-        //gatt连接
+        //gatt连接,设置gatt回调
         gatt = device!!.connectGatt(this, false, bleCallback)
         //Ble状态页面UI回调
         bleCallback.setUiCallback(this)

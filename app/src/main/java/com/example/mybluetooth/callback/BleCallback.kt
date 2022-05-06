@@ -10,6 +10,7 @@ class BleCallback:BluetoothGattCallback() {
 
     private val TAG = BleCallback::class.java.simpleName
     private lateinit var uiCallback: UiCallback
+    private lateinit var mBluetoothGatt: BluetoothGatt
 
     fun setUiCallback(uiCallback: UiCallback) {
         this.uiCallback = uiCallback
@@ -31,8 +32,12 @@ class BleCallback:BluetoothGattCallback() {
         uiCallback.state(
             when (newState) {
                 BluetoothProfile.STATE_CONNECTED -> {   //连接成功
+
                     //获取MtuSize,触发onMtuChanged回调
-                    gatt.requestMtu(512)
+                   // gatt.requestMtu(512)
+
+                    //发现服务,触发onServicesDiscovered回调
+                    gatt.discoverServices()
                     "连接成功"
                 }
                 BluetoothProfile.STATE_DISCONNECTED -> "断开连接"    //断开连接
@@ -41,13 +46,13 @@ class BleCallback:BluetoothGattCallback() {
         )
     }
 
-    //获取MtuSize回调
+   /* //获取MtuSize回调
     @SuppressLint("MissingPermission")
     override fun onMtuChanged(gatt: BluetoothGatt?, mtu: Int, status: Int) {
         uiCallback.state("获取到MtuSize:$mtu")
         //发现服务,触发onServicesDiscovered回调
         gatt?.discoverServices()
-    }
+    }*/
 
     //发现服务回调,打开通知开关
     @SuppressLint("MissingPermission")
@@ -55,6 +60,14 @@ class BleCallback:BluetoothGattCallback() {
         uiCallback.state(if (!BleHelper.enableIndicateNotification(gatt)) {
             gatt.disconnect()
             "开启通知属性异常"
-        } else "发现了服务 : $status")
+        } else {
+            //gattServices用来存放所有获取到的服务
+            var gattServices: List<BluetoothGattService> = mBluetoothGatt.services
+            for (gattService in gattServices){
+                var serviceUUID=gattService.uuid.toString()
+            }
+            "发现了服务 : $status"
+        }
+        )
     }
 }

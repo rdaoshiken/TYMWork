@@ -27,11 +27,11 @@ object BleHelper {
                     value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
                 }) else false
 
-    //发送指令  command:命令   isResponse:是否响应
+   /* //发送指令  command:命令   isResponse:是否响应
     @SuppressLint("MissingPermission")
     fun sendCommand(gatt: BluetoothGatt, command: String, isResponse: Boolean): Boolean =
         gatt.writeCharacteristic(gatt.getService(UUID.fromString(BleConstant.SERVICE_UUID))
             .getCharacteristic(UUID.fromString(BleConstant.CHARACTERISTIC_WRITE_UUID)).apply {
                 writeType = if (isResponse) WRITE_TYPE_DEFAULT else WRITE_TYPE_NO_RESPONSE
-                value = ByteUtils.hexStringToBytes(command) })
+                value = ByteUtils.hexStringToBytes(command) })*/
 }

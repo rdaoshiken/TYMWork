@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -49,6 +50,8 @@ class MainActivity : AppCompatActivity() {
         checkAndroidVersion()
         //初始化页面
         initView()
+
+        Log.e("111","111")
     }
 
     //检查Android版本

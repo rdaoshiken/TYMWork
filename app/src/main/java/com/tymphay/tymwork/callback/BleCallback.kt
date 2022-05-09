@@ -3,12 +3,12 @@ package com.tymphay.tymwork.callback
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.util.Log
+import com.tymphay.tymwork.utils.BleConstant
 import com.tymphay.tymwork.utils.BleHelper
 
 //管理回调
 class BleCallback:BluetoothGattCallback() {
 
-    private val TAG = BleCallback::class.java.simpleName
     private lateinit var uiCallback: UiCallback
     private lateinit var mBluetoothGatt: BluetoothGatt
 
@@ -26,18 +26,15 @@ class BleCallback:BluetoothGattCallback() {
     @SuppressLint("MissingPermission")
     override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
         if (status != BluetoothGatt.GATT_SUCCESS) {
-            Log.e(TAG, "onConnectionStateChange: $status")
+            Log.e("status", "onConnectionStateChange: $status")
             return
         }
         uiCallback.state(
             when (newState) {
                 BluetoothProfile.STATE_CONNECTED -> {   //连接成功
-
-                    //获取MtuSize,触发onMtuChanged回调
-                   // gatt.requestMtu(512)
-
                     //连接成功后，发现服务,触发onServicesDiscovered回调
                     gatt.discoverServices()
+                    Log.e("111","连接成功")
                     "连接成功"
                 }
                 BluetoothProfile.STATE_DISCONNECTED -> "断开连接"    //断开连接
@@ -46,18 +43,11 @@ class BleCallback:BluetoothGattCallback() {
         )
     }
 
-   /* //获取MtuSize回调
-    @SuppressLint("MissingPermission")
-    override fun onMtuChanged(gatt: BluetoothGatt?, mtu: Int, status: Int) {
-        uiCallback.state("获取到MtuSize:$mtu")
-        //发现服务,触发onServicesDiscovered回调
-        gatt?.discoverServices()
-    }*/
-
     //发现服务回调,打开通知开关
     @SuppressLint("MissingPermission")
     override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
-        uiCallback.state(if (!BleHelper.enableIndicateNotification(gatt)) {
+        uiCallback.state(
+            /*if (!BleHelper.enableIndicateNotification(gatt)) {
             gatt.disconnect()
             "开启通知属性异常"
         } else {
@@ -65,9 +55,27 @@ class BleCallback:BluetoothGattCallback() {
             var gattServices: List<BluetoothGattService> = mBluetoothGatt.services
             for (gattService in gattServices){
                 var serviceUUID=gattService.uuid.toString()
+                Log.e("ServiceUUID:","$serviceUUID")
             }
-            "发现了服务 : $status"
-        }
+            "发现了服务 $status"
+        }*/
+
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+
+                
+                gatt.disconnect()
+                "开启通知属性异常"
+            } else {
+                //gattServices用来存放所有获取到的服务
+                var gattServices: List<BluetoothGattService> = mBluetoothGatt.services
+                for (gattService in gattServices){
+                    var serviceUUID=gattService.uuid.toString()
+                    Log.e("ServiceUUID:","$serviceUUID")
+                }
+                "发现了服务 $status"
+            }
+
         )
+
     }
 }

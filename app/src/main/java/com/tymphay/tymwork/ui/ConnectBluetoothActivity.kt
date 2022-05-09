@@ -9,7 +9,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.tymphay.tymwork.callback.BleCallback
 import com.tymphay.tymwork.databinding.ActivityConnectBluetoothBinding
-import kotlinx.android.synthetic.main.device_detail.*
 
 class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
 
@@ -18,7 +17,7 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
     //Gatt
     private lateinit var gatt: BluetoothGatt
     //Ble回调
-    private val bleCallback=BleCallback()
+    private val bleCallback= BleCallback()
     //状态缓存
     private var stringBuffer= StringBuffer()
 
@@ -38,12 +37,12 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
             title = "Connection"
             setDisplayHomeAsUpEnabled(true)
         }
-        //获取从上个页面传递过来的设备
+        //获取从MainActivity传递过来的设备
         val device = intent.getParcelableExtra<BluetoothDevice>("device")
-        //将设备详细信息显示在UI上
-        Log.v("Detail", "${device?.name}")
-        tv_device_name_1.setText("设备名称：${device?.name}")
-        tv_device_address.setText("设备地址：${device?.address}")
+        //Device
+        binding.tvDeviceId.text= ("设备ID: "+device?.uuids.toString() ) //设备ID
+        binding.tvDeviceName1.text= ("设备名称: "+device?.name )   //设备名称
+        binding.tvDeviceAddress.text=("MAC地址: "+device?.address )  //MAC地址
         //gatt连接,设置gatt回调
         gatt = device!!.connectGatt(this, false, bleCallback)
         //Ble状态页面UI回调
@@ -57,6 +56,6 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
 
     //页面返回
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        if (item.itemId== android.R.id.home){ onBackPressed();true }else  false
+        if (item.itemId== android.R.id.home){ onBackPressed();true } else  false
 
 }

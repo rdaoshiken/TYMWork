@@ -22,7 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyBlueTooth">
         <activity android:name=".ui.ConnectBluetoothActivity"></activity>
-        <activity android:name=".ui.DeviceDetailActivity"></activity>
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

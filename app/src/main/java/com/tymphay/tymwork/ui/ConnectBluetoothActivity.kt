@@ -7,8 +7,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.tymphay.tymwork.adapter.ConnectDeviceAdapter
+import com.tymphay.tymwork.bean.ConnectDevice
 import com.tymphay.tymwork.callback.BleCallback
 import com.tymphay.tymwork.databinding.ActivityConnectBluetoothBinding
+import com.tymphay.tymwork.utils.BleConstant.BleConstant.SERVICE_UUID
+import kotlinx.android.synthetic.main.activity_device_detail.*
 
 class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
 
@@ -20,6 +26,10 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
     private val bleCallback= BleCallback()
     //状态缓存
     private var stringBuffer= StringBuffer()
+    //连接设备适配器
+    var connectDeviceAdapter : ConnectDeviceAdapter? =null
+    //连接设备列表
+    private var connectList : MutableList<ConnectDevice>? =ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,14 +49,33 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
         }
         //获取从MainActivity传递过来的设备
         val device = intent.getParcelableExtra<BluetoothDevice>("device")
+
         //Device
         binding.tvDeviceId.text= ("设备ID: "+device?.uuids.toString() ) //设备ID
         binding.tvDeviceName1.text= ("设备名称: "+device?.name )   //设备名称
         binding.tvDeviceAddress.text=("MAC地址: "+device?.address )  //MAC地址
+
         //gatt连接,设置gatt回调
         gatt = device!!.connectGatt(this, false, bleCallback)
+
+        val service = gatt.services
+        //Service
+        binding.tvServiceName.text=("服务名称: ")
+        //binding.tvServiceUuid.text=("服务UUID: " + service.uuid)
+
         //Ble状态页面UI回调
         bleCallback.setUiCallback(this)
+
+      /*  //添加已连接设备到列表
+        connectList?.add(ConnectDevice(device,device.name))*/
+
+        //已连接设备的适配器
+        connectDeviceAdapter = ConnectDeviceAdapter(bleCallback.connectList as ArrayList<ConnectDevice>?)
+        //RecyclerView:
+        rv_device_connect.apply {
+            layoutManager = LinearLayoutManager(this@ConnectBluetoothActivity)
+            adapter = connectDeviceAdapter
+        }
     }
 
     override fun state(state: String)=runOnUiThread {

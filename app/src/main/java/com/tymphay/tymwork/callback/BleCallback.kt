@@ -3,14 +3,24 @@ package com.tymphay.tymwork.callback
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.tymphay.tymwork.adapter.ConnectDeviceAdapter
+import com.tymphay.tymwork.bean.ConnectDevice
 import com.tymphay.tymwork.utils.BleConstant
 import com.tymphay.tymwork.utils.BleHelper
+import kotlinx.android.synthetic.main.activity_device_detail.*
+import kotlinx.android.synthetic.main.activity_connect_bluetooth.*
 
 //管理回调
 class BleCallback:BluetoothGattCallback() {
 
     private lateinit var uiCallback: UiCallback
     private lateinit var mBluetoothGatt: BluetoothGatt
+    //连接设备适配器
+    var connectDeviceAdapter : ConnectDeviceAdapter? =null
+    //连接设备列表
+    public var connectList : MutableList<ConnectDevice>? =ArrayList()
+
 
     fun setUiCallback(uiCallback: UiCallback) {
         this.uiCallback = uiCallback
@@ -34,7 +44,13 @@ class BleCallback:BluetoothGattCallback() {
                 BluetoothProfile.STATE_CONNECTED -> {   //连接成功
                     //连接成功后，发现服务,触发onServicesDiscovered回调
                     gatt.discoverServices()
-                    Log.e("111","连接成功")
+
+                    //获取已连接的设备
+                    val device=gatt.device
+                    //将已连接的设备存到列表
+                    connectList?.add(ConnectDevice(device,device.name))
+                    Log.e("已连接的设备：","$device")
+                    Log.e("已连接的设备："," 有 ${connectList?.size}个")
                     "连接成功"
                 }
                 BluetoothProfile.STATE_DISCONNECTED -> "断开连接"    //断开连接
@@ -47,32 +63,18 @@ class BleCallback:BluetoothGattCallback() {
     @SuppressLint("MissingPermission")
     override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
         uiCallback.state(
-            /*if (!BleHelper.enableIndicateNotification(gatt)) {
-            gatt.disconnect()
-            "开启通知属性异常"
-        } else {
-            //gattServices用来存放所有获取到的服务
-            var gattServices: List<BluetoothGattService> = mBluetoothGatt.services
-            for (gattService in gattServices){
-                var serviceUUID=gattService.uuid.toString()
-                Log.e("ServiceUUID:","$serviceUUID")
-            }
-            "发现了服务 $status"
-        }*/
-
             if (status == BluetoothGatt.GATT_SUCCESS) {
-
-                
-                gatt.disconnect()
-                "开启通知属性异常"
-            } else {
                 //gattServices用来存放所有获取到的服务
-                var gattServices: List<BluetoothGattService> = mBluetoothGatt.services
-                for (gattService in gattServices){
-                    var serviceUUID=gattService.uuid.toString()
-                    Log.e("ServiceUUID:","$serviceUUID")
+                var gattServices: List<BluetoothGattService> = gatt.services
+                for (gattService in gattServices) {
+                    var serviceName = gattService
+                    var serviceUUID = gattService.uuid.toString()
+                    Log.e("Service", "name:$serviceName")
+                    Log.e("Service", "UUID:$serviceUUID")
                 }
-                "发现了服务 $status"
+                "  "
+            }else {
+                "  "
             }
 
         )

@@ -50,8 +50,6 @@ class MainActivity : AppCompatActivity() {
         checkAndroidVersion()
         //初始化页面
         initView()
-
-        Log.e("111","111")
     }
 
     //检查Android版本

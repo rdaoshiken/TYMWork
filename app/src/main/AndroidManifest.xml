@@ -20,7 +20,8 @@
         android:label="MyBluetooth"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyBlueTooth">
+        android:theme="@style/Theme.MyBlueTooth"
+        android:name=".TymApplication">
         <activity android:name=".ui.ConnectBluetoothActivity"></activity>
         <activity
             android:name=".ui.MainActivity"

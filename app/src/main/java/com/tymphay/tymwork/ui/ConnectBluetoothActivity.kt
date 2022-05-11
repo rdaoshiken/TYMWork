@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tymphay.tymwork.TymApplication
 import com.tymphay.tymwork.adapter.ConnectDeviceAdapter
 import com.tymphay.tymwork.bean.ConnectDevice
 import com.tymphay.tymwork.callback.BleCallback
@@ -28,8 +29,6 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
     private var stringBuffer= StringBuffer()
     //连接设备适配器
     var connectDeviceAdapter : ConnectDeviceAdapter? =null
-    //连接设备列表
-    private var connectList : MutableList<ConnectDevice>? =ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,27 +49,33 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
         //获取从MainActivity传递过来的设备
         val device = intent.getParcelableExtra<BluetoothDevice>("device")
 
-        //Device
+        //Device Detail:
         binding.tvDeviceId.text= ("设备ID: "+device?.uuids.toString() ) //设备ID
         binding.tvDeviceName1.text= ("设备名称: "+device?.name )   //设备名称
         binding.tvDeviceAddress.text=("MAC地址: "+device?.address )  //MAC地址
 
         //gatt连接,设置gatt回调
         gatt = device!!.connectGatt(this, false, bleCallback)
-
         val service = gatt.services
-        //Service
-        binding.tvServiceName.text=("服务名称: ")
-        //binding.tvServiceUuid.text=("服务UUID: " + service.uuid)
 
+       /* //Service Detail:
+        binding.tvServiceName.text=("服务名称: ")
+        binding.tvServiceUuid.text=("服务UUID: " + service.uuid)
+*/
         //Ble状态页面UI回调
         bleCallback.setUiCallback(this)
 
       /*  //添加已连接设备到列表
         connectList?.add(ConnectDevice(device,device.name))*/
 
+        Log.e("初始值：","${TymApplication.getContext()}")  //获取全局变量初始值
+        //添加已连接的设备到列表中
+        TymApplication.connectList?.add(ConnectDevice(device,device.name))
+        Log.e("新值：","${TymApplication.getContext()}")  //获取全局变量新值
+
+
         //已连接设备的适配器
-        connectDeviceAdapter = ConnectDeviceAdapter(bleCallback.connectList as ArrayList<ConnectDevice>?)
+        connectDeviceAdapter = ConnectDeviceAdapter(TymApplication.connectList as ArrayList<ConnectDevice>?)
         //RecyclerView:
         rv_device_connect.apply {
             layoutManager = LinearLayoutManager(this@ConnectBluetoothActivity)

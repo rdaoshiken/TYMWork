@@ -18,9 +18,6 @@ class BleCallback:BluetoothGattCallback() {
     private lateinit var mBluetoothGatt: BluetoothGatt
     //连接设备适配器
     var connectDeviceAdapter : ConnectDeviceAdapter? =null
-    //连接设备列表
-    public var connectList : MutableList<ConnectDevice>? =ArrayList()
-
 
     fun setUiCallback(uiCallback: UiCallback) {
         this.uiCallback = uiCallback
@@ -45,12 +42,14 @@ class BleCallback:BluetoothGattCallback() {
                     //连接成功后，发现服务,触发onServicesDiscovered回调
                     gatt.discoverServices()
 
-                    //获取已连接的设备
+                    /*//获取已连接的设备
                     val device=gatt.device
                     //将已连接的设备存到列表
                     connectList?.add(ConnectDevice(device,device.name))
                     Log.e("已连接的设备：","$device")
-                    Log.e("已连接的设备："," 有 ${connectList?.size}个")
+                    Log.e("已连接的设备："," 有 ${connectList?.size}个") */
+
+                    Log.e("已连接的设备：","连接成功")
                     "连接成功"
                 }
                 BluetoothProfile.STATE_DISCONNECTED -> "断开连接"    //断开连接

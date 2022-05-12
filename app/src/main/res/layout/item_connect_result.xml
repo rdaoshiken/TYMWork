@@ -7,6 +7,7 @@
         android:id="@+id/connect_result_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:background="@color/green_light"/>
 
 </LinearLayout>

@@ -32,7 +32,7 @@ android {
     }
 
     //使用viewBinding
-    viewBinding {
+    viewBinding{
         enabled = true
     }
 }

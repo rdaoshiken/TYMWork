@@ -3,6 +3,7 @@ package com.tymphay.tymwork.ui
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
+import android.bluetooth.BluetoothGattService
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -14,15 +15,14 @@ import com.tymphay.tymwork.adapter.ConnectDeviceAdapter
 import com.tymphay.tymwork.bean.ConnectDevice
 import com.tymphay.tymwork.callback.BleCallback
 import com.tymphay.tymwork.databinding.ActivityConnectBluetoothBinding
-import com.tymphay.tymwork.utils.BleConstant.BleConstant.SERVICE_UUID
-import kotlinx.android.synthetic.main.activity_device_detail.*
+import kotlinx.android.synthetic.main.activity_connect_bluetooth.*
 
 class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
 
     //绑定视图
     private lateinit var binding: ActivityConnectBluetoothBinding
     //Gatt
-    private lateinit var gatt: BluetoothGatt
+    private lateinit var gatt : BluetoothGatt
     //Ble回调
     private val bleCallback= BleCallback()
     //状态缓存
@@ -49,33 +49,31 @@ class ConnectBluetoothActivity :AppCompatActivity(),BleCallback.UiCallback {
         //获取从MainActivity传递过来的设备
         val device = intent.getParcelableExtra<BluetoothDevice>("device")
 
-        //Device Detail:
-        binding.tvDeviceId.text= ("设备ID: "+device?.uuids.toString() ) //设备ID
+        //设备的详细信息:
+        if (device?.uuids.toString() == null)  binding.tvDeviceId.text= ("设备ID: None" ) //设备ID
+                else binding.tvDeviceId.text= ("设备ID: "+device?.uuids.toString() ) //设备ID
         binding.tvDeviceName1.text= ("设备名称: "+device?.name )   //设备名称
         binding.tvDeviceAddress.text=("MAC地址: "+device?.address )  //MAC地址
 
-        //gatt连接,设置gatt回调
-        gatt = device!!.connectGatt(this, false, bleCallback)
-        val service = gatt.services
+            //gatt连接,设置gatt回调
+            gatt = device!!.connectGatt(this, false, bleCallback)
 
-       /* //Service Detail:
+        //连接按钮的点击事件
+        bt_connect.setOnClickListener {
+
+        }
+
+        //服务的详细信息:
         binding.tvServiceName.text=("服务名称: ")
-        binding.tvServiceUuid.text=("服务UUID: " + service.uuid)
-*/
+        binding.tvServiceUuid.text=("服务UUID: " )
+
         //Ble状态页面UI回调
         bleCallback.setUiCallback(this)
 
-      /*  //添加已连接设备到列表
-        connectList?.add(ConnectDevice(device,device.name))*/
-
-        Log.e("初始值：","${TymApplication.getContext()}")  //获取全局变量初始值
-        //添加已连接的设备到列表中
-        TymApplication.connectList?.add(ConnectDevice(device,device.name))
-        Log.e("新值：","${TymApplication.getContext()}")  //获取全局变量新值
-
-
         //已连接设备的适配器
         connectDeviceAdapter = ConnectDeviceAdapter(TymApplication.connectList as ArrayList<ConnectDevice>?)
+        //刷新数据
+        connectDeviceAdapter!!.notifyDataSetChanged()
         //RecyclerView:
         rv_device_connect.apply {
             layoutManager = LinearLayoutManager(this@ConnectBluetoothActivity)

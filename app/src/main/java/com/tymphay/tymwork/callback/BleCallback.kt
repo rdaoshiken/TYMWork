@@ -6,6 +6,7 @@ import android.util.Log
 import com.tymphay.tymwork.TymApplication
 import com.tymphay.tymwork.adapter.ConnectDeviceAdapter
 import com.tymphay.tymwork.bean.ConnectDevice
+import kotlinx.android.synthetic.main.activity_connect_bluetooth.*
 
 //管理回调
 class BleCallback:BluetoothGattCallback() {
@@ -55,12 +56,15 @@ class BleCallback:BluetoothGattCallback() {
     override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
         uiCallback.state(
             if (status == BluetoothGatt.GATT_SUCCESS){
+
                 //gattServices用来存放所有获取到的服务
-                var gattServices: MutableList<BluetoothGattService> = gatt.services as MutableList<BluetoothGattService>
-                for (gattService in gattServices) {
-                    var serviceUUID = gattService.uuid.toString()
-                    Log.e("service", "UUID:$serviceUUID")
+                var gattServices: MutableList<BluetoothGattService> =
+                    gatt.services as MutableList<BluetoothGattService>
+                //将获取到的service添加到全局变量
+                for (i in 1..gattServices.size){
+                    TymApplication.gattServices.add(gattServices[i])
                 }
+
                 "发现服务"
             } else "未发现服务"
         )

@@ -1,6 +1,7 @@
 package com.tymphay.tymwork
 
 import android.app.Application
+import android.bluetooth.BluetoothGattService
 import android.content.Context
 import com.tymphay.tymwork.bean.ConnectDevice
 
@@ -13,6 +14,8 @@ class TymApplication: Application() {
 
         //连接设备列表
         var connectList : MutableList<ConnectDevice>? =ArrayList()
+        //获取到的service
+        var gattServices: MutableList<BluetoothGattService> = ArrayList()
 
         fun getContext():Context {
             return context!!

@@ -3,11 +3,10 @@ package com.tymphay.tymwork.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tymphay.tymwork.R
-import com.tymphay.tymwork.bean.BleDevice
+import com.tymphay.tymwork.model.BleDevice
 import kotlinx.android.synthetic.main.item_bluetooth.view.*
 
 //扫描列表的适配器
@@ -41,7 +40,7 @@ class ScanListAdapter (var list: MutableList<BleDevice>?): RecyclerView.Adapter<
     }
 
     override fun getItemCount(): Int {
-        return list!!.size
+        return list?.size ?: 0
     }
 }
 

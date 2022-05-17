@@ -1,13 +1,11 @@
 package com.tymphay.tymwork.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tymphay.tymwork.R
-import com.tymphay.tymwork.bean.ConnectDevice
-import kotlinx.android.synthetic.main.item_connect_result.view.*
+import com.tymphay.tymwork.model.ConnectDevice
+import com.tymphay.tymwork.view.DeviceViewHolder
 
 //显示所有已连接设备适配器
 class ConnectDeviceAdapter (var list: ArrayList<ConnectDevice>?): RecyclerView.Adapter<DeviceViewHolder>() {
@@ -21,12 +19,8 @@ class ConnectDeviceAdapter (var list: ArrayList<ConnectDevice>?): RecyclerView.A
     }
 
     override fun getItemCount(): Int {
-        return list!!.size
+        return list?.size ?: 0
     }
 }
 
-class DeviceViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    //已连接设备名称
-    var deviceName: TextView? = itemView.connect_result_name
-}
 

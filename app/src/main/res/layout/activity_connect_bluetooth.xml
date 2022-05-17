@@ -29,7 +29,7 @@
         android:background="#EEE" />
 
     <TextView
-        android:id="@+id/tv_device_id"
+        android:id="@+id/tv_detail_device_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -42,7 +42,7 @@
         android:background="#EEE" />
 
     <TextView
-        android:id="@+id/tv_device_name_1"
+        android:id="@+id/tv_detail_device_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -55,7 +55,7 @@
         android:background="#EEE" />
 
     <TextView
-        android:id="@+id/tv_device_address"
+        android:id="@+id/tv_detail_device_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"

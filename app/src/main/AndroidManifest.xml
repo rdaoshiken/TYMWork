@@ -22,9 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyBlueTooth"
         android:name=".TymApplication">
-        <activity android:name=".ui.ConnectBluetoothActivity"></activity>
+        <activity android:name=".view.ConnectBluetoothActivity"></activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

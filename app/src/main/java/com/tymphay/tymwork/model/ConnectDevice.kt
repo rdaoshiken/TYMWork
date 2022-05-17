@@ -1,4 +1,4 @@
-package com.tymphay.tymwork.bean
+package com.tymphay.tymwork.model
 
 import android.bluetooth.BluetoothDevice
 

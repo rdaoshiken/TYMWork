@@ -1,45 +1,43 @@
-package com.tymphay.tymwork.ui
+package com.tymphay.tymwork.view
 
 import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tymphay.tymwork.R
 import com.tymphay.tymwork.TymApplication
 import com.tymphay.tymwork.adapter.ConnectDeviceAdapter
-import com.tymphay.tymwork.bean.ConnectDevice
+import com.tymphay.tymwork.model.ConnectDevice
 import kotlinx.android.synthetic.main.activity_connect_bluetooth.*
-import kotlinx.android.synthetic.main.item_bluetooth.*
-import kotlinx.android.synthetic.main.item_connect_result.*
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class ConnectBluetoothActivity :AppCompatActivity() {
 
     //状态缓存
-    private var stringBuffer= StringBuffer()
+    var stringBuffer= StringBuffer()
     //连接设备适配器
-    var connectDeviceAdapter : ConnectDeviceAdapter? =null
+    private var connectDeviceAdapter : ConnectDeviceAdapter? =null
     //Key:service name      Value:service uuid
-    val uuids : HashMap<String,String> = HashMap<String,String>()
+    private val uuids : HashMap<String,String> = HashMap<String,String>()
     lateinit var gatt: BluetoothGatt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connect_bluetooth)
 
-        //service uuid:
-        uuids.put("00001800-0000-1000-8000-00805f9b34fb","Generic Access Profile")
-//        uuids.put("00001801-0000-1000-8000-00805f9b34fb","Generic Attribute Profile")
-//        uuids.put("0000180a-0000-1000-8000-00805f9b34fb","Device Information")
-//        uuids.put("0000180f-0000-1000-8000-00805f9b34fb","Battery Service")
-
+        //初始化UUID
+        initUUID()
         //页面初始化
         initView()
+    }
+
+    //初始化UUID
+    private fun initUUID(){
+        //service uuid:
+        uuids.put("00001800-0000-1000-8000-00805f9b34fb","Generic Access Profile")
     }
 
     //蓝牙回调函数
@@ -48,8 +46,7 @@ class ConnectBluetoothActivity :AppCompatActivity() {
         @SuppressLint("MissingPermission")
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
             if (status != BluetoothGatt.GATT_SUCCESS) {
-                Log.e("status", "onConnectionStateChange: $status")
-                state("连接失败")
+                state(getString(R.string.connect_fail))
                 return
             }
             state(
@@ -63,10 +60,10 @@ class ConnectBluetoothActivity :AppCompatActivity() {
                             ?.let { TymApplication.connectList?.add(it) }
                         //连接成功后，发现服务,触发onServicesDiscovered回调
                         gatt?.discoverServices()
-                        bt_connect.text="断开连接"
-                        "连接成功"
+                        bt_connect.text=getString(R.string.connect_close)
+                        getString(R.string.connect_success)
                     }
-                    BluetoothProfile.STATE_DISCONNECTED -> "断开连接"    //断开连接
+                    BluetoothProfile.STATE_DISCONNECTED -> getString(R.string.connect_close)    //断开连接
                     else -> "onConnectionStateChange: $status"
                 }
             )
@@ -89,23 +86,21 @@ class ConnectBluetoothActivity :AppCompatActivity() {
                     //遍历获取到的gattServices
                     for (gattService in  TymApplication.gattServices) {
                         var serviceUUID = gattService.uuid.toString()
-                        Log.e("serviceUUID","$serviceUUID")
                         for (key in uuids.keys) {
                             if (serviceUUID.equals(key)) {
                                 //服务的详细信息:
-                                tv_service_name.text = "服务名称: ${uuids[key]}"
-                                tv_service_uuid.text = "服务UUID: $serviceUUID"
+                                tv_service_name.text = getString(R.string.service_name)+"${uuids[key]}"
+                                tv_service_uuid.text = getString(R.string.service_uuid)+"$serviceUUID"
                                 return
                             }else{
-                                tv_service_name.text = "服务名称: Unknown"
-                                tv_service_uuid.text="服务UUID: $serviceUUID"
+                                tv_service_name.text = getString(R.string.service_name)+"Unknown"
+                                tv_service_uuid.text= getString(R.string.service_uuid)+ "$serviceUUID"
                             }
                         }
                     }
-                    "发现服务"
-                } else "未发现服务"
+                    getString(R.string.service_discovered)
+                } else getString(R.string.service_covered)
             )
-
         }
     }
 
@@ -118,19 +113,19 @@ class ConnectBluetoothActivity :AppCompatActivity() {
         }
 
         //获取从MainActivity传递过来的设备
-        val device = intent.getParcelableExtra<BluetoothDevice>("device")
+        val device = intent.getParcelableExtra<BluetoothDevice>(getString(R.string.device))
 
         //设备的详细信息:
-        if (device?.uuids == null)  tv_device_id.text= ("设备ID: None" ) //设备ID
-        else tv_device_id.text= ("设备ID: "+device?.uuids.toString() ) //设备ID
-        tv_device_name_1.text= ("设备名称: "+device?.name )   //设备名称
-        tv_device_address.text=("MAC地址: "+device?.address )  //MAC地址
+        if (device?.uuids == null)  tv_detail_device_id.text= (getString(R.string.device_id_none) ) //设备ID
+        else tv_detail_device_id.text= (getString(R.string.device_id)+device?.uuids.toString() ) //设备ID
+        tv_detail_device_name.text= (getString(R.string.device_name)+device?.name )   //设备名称
+        tv_detail_device_address.text=(getString(R.string.device_address)+device?.address )  //MAC地址
 
         //连接按钮的点击事件
         bt_connect.setOnClickListener {
-            if (bt_connect.text == "连接"){
+            if (bt_connect.text == getString(R.string.device_connect)){
                 //gatt连接,设置gatt回调
-                gatt = device!!.connectGatt(this, false, bluetoothGattCallback)
+                gatt = device?.connectGatt(this, false, bluetoothGattCallback) ?: gatt
             }else{
                 gatt.disconnect()     //断开连接
             }
@@ -139,7 +134,7 @@ class ConnectBluetoothActivity :AppCompatActivity() {
         //已连接设备的适配器
         connectDeviceAdapter = ConnectDeviceAdapter(TymApplication.connectList as ArrayList<ConnectDevice>?)
         //刷新数据
-        connectDeviceAdapter!!.notifyDataSetChanged()
+        connectDeviceAdapter?.notifyDataSetChanged()
         //RecyclerView:
         rv_device_connect.apply {
             layoutManager = LinearLayoutManager(this@ConnectBluetoothActivity)

@@ -9,6 +9,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.format.DateFormat.format
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,9 +20,17 @@ import com.tymphay.tymwork.R
 import com.tymphay.tymwork.adapter.ScanListAdapter
 import com.tymphay.tymwork.bean.BleDevice
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_bluetooth.*
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanCallback
 import no.nordicsemi.android.support.v18.scanner.ScanResult
+import java.lang.String.format
+import java.text.DateFormat
+import java.text.MessageFormat.format
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -91,16 +101,17 @@ class MainActivity : AppCompatActivity() {
     private val scanCallback = object : ScanCallback() {
         @SuppressLint("MissingPermission")
         override fun onScanResult(callbackType: Int, result: ScanResult) {
-            val address=result.device.address
-            val name=result.device.name ?:"Unknown"
+            val address=result.device.address  //MAC地址
+            val name=result.device.name ?:"Unknown"  //设备名称
+            val scanTime=SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(Date())  //扫描时间
             if (addressList.size==0){
                 addressList.add(address)
-                addDeviceList(BleDevice(result.device,result.rssi,name))
+                addDeviceList(BleDevice(result.device,result.rssi,name,scanTime))
             }else{
                 //检查之前所添加的设备地址是否存在当前地址列表
                 if (!addressList.contains(address)){
                     addressList.add(address)
-                    addDeviceList(BleDevice(result.device,result.rssi,name))
+                    addDeviceList(BleDevice(result.device,result.rssi,name,scanTime))
                 }
             }
         }
@@ -116,6 +127,7 @@ class MainActivity : AppCompatActivity() {
 
     //页面初始化
     private fun initView() {
+
         //适配器:
         scanListAdapter = ScanListAdapter(mList).apply {
             //设置列表的点击事件

@@ -31,6 +31,8 @@ class ScanListAdapter (var list: MutableList<BleDevice>?): RecyclerView.Adapter<
         holder.deviceAdress?.text=list?.get(position)?.device?.address
         //获取蓝牙设备信号强度
         holder.deviceRssi?.text=list?.get(position)?.rssi.toString()
+        //获取上次扫描的时间
+        holder.scanTime?.text=list?.get(position)?.scanTime
 
         //item的点击事件的处理
         holder.itemView.setOnClickListener {
@@ -49,6 +51,8 @@ class DeviceViewHolderScan(itemView: View): RecyclerView.ViewHolder(itemView) {
     //已扫描设备MAC地址
     var deviceAdress: TextView? = itemView.tv_mac_address
     //已扫描设备的信号强度
-    var deviceRssi: TextView?=itemView.tv_rssi
+    var deviceRssi: TextView? = itemView.tv_rssi
+    //上次扫描的时间
+    var scanTime: TextView? = itemView.tv_scan_time
 }
 

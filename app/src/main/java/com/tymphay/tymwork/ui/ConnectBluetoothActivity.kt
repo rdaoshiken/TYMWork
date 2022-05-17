@@ -24,18 +24,19 @@ class ConnectBluetoothActivity :AppCompatActivity() {
     private var stringBuffer= StringBuffer()
     //连接设备适配器
     var connectDeviceAdapter : ConnectDeviceAdapter? =null
-
+    //Key:service name      Value:service uuid
     val uuids : HashMap<String,String> = HashMap<String,String>()
+    lateinit var gatt: BluetoothGatt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connect_bluetooth)
 
         //service uuid:
-        uuids.put("00001801-0000-1000-8000-00805f9b34fb","Generic Attribute Profile")
         uuids.put("00001800-0000-1000-8000-00805f9b34fb","Generic Access Profile")
-        uuids.put("0000180a-0000-1000-8000-00805f9b34fb","Device Information")
-        uuids.put("0000180f-0000-1000-8000-00805f9b34fb","Battery Service")
+//        uuids.put("00001801-0000-1000-8000-00805f9b34fb","Generic Attribute Profile")
+//        uuids.put("0000180a-0000-1000-8000-00805f9b34fb","Device Information")
+//        uuids.put("0000180f-0000-1000-8000-00805f9b34fb","Battery Service")
 
         //页面初始化
         initView()
@@ -62,6 +63,7 @@ class ConnectBluetoothActivity :AppCompatActivity() {
                             ?.let { TymApplication.connectList?.add(it) }
                         //连接成功后，发现服务,触发onServicesDiscovered回调
                         gatt?.discoverServices()
+                        bt_connect.text="断开连接"
                         "连接成功"
                     }
                     BluetoothProfile.STATE_DISCONNECTED -> "断开连接"    //断开连接
@@ -93,13 +95,10 @@ class ConnectBluetoothActivity :AppCompatActivity() {
                                 //服务的详细信息:
                                 tv_service_name.text = "服务名称: ${uuids[key]}"
                                 tv_service_uuid.text = "服务UUID: $serviceUUID"
-
-                                Log.e("serviceName","${uuids[key]}")
-                                Log.e("serviceUUID","${uuids.keys}")
-
+                                return
                             }else{
                                 tv_service_name.text = "服务名称: Unknown"
-                                Log.e("service","Unknown")
+                                tv_service_uuid.text="服务UUID: $serviceUUID"
                             }
                         }
                     }
@@ -129,8 +128,12 @@ class ConnectBluetoothActivity :AppCompatActivity() {
 
         //连接按钮的点击事件
         bt_connect.setOnClickListener {
-            //gatt连接,设置gatt回调
-            var gatt: BluetoothGatt = device!!.connectGatt(this, false, bluetoothGattCallback)
+            if (bt_connect.text == "连接"){
+                //gatt连接,设置gatt回调
+                gatt = device!!.connectGatt(this, false, bluetoothGattCallback)
+            }else{
+                gatt.disconnect()     //断开连接
+            }
         }
 
         //已连接设备的适配器

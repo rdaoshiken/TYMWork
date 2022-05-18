@@ -126,8 +126,9 @@ class ConnectBluetoothActivity :AppCompatActivity() {
             if (bt_connect.text == getString(R.string.device_connect)){
                 //gatt连接,设置gatt回调
                 gatt = device?.connectGatt(this, false, bluetoothGattCallback) ?: gatt
-            }else{
-                gatt.disconnect()     //断开连接
+                if(bt_connect.text == "断开连接"){
+                    gatt.disconnect()   //断开连接
+                }
             }
         }
 

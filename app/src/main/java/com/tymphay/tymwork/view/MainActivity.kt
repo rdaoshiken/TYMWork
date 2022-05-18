@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tymphay.tymwork.R
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     //当前是否扫描
     private var isScanning = false
     //requestCode
-    private var REQUEST_CODE_ACCESS_COARSE_LOCATION = 1
+    private var REQUEST_CODE = 1
 
     //注册开启蓝牙，需要注意在onCreate之前注册
     private val activityResult =
@@ -56,15 +57,28 @@ class MainActivity : AppCompatActivity() {
 
     //检查Android版本
     private fun checkAndroidVersion(){
+        //Android12以下版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             //判断权限是否开启
-            when (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            when (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)) {
                 PackageManager.PERMISSION_GRANTED -> openBluetooth()    //权限已打开
-                else -> requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_CODE_ACCESS_COARSE_LOCATION)  //权限未打开,请求权限
+                else -> requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)  //权限未打开,请求权限
             }
         }
+        //Android12所要申请的权限列表
+        val requestList = ArrayList<String>()
+        //Android12及以上版本
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            requestList.add(Manifest.permission.BLUETOOTH_SCAN)
+            requestList.add(Manifest.permission.BLUETOOTH_CONNECT)
+            requestList.add(Manifest.permission.BLUETOOTH_ADVERTISE)
+        if (ActivityCompat.checkSelfPermission(this,requestList[0]) != PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(this,requestList[1]) != PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(this,requestList[2]) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(this, arrayOf(requestList.toString()),REQUEST_CODE)
+        }
     }
-
+}
     //请求权限之后，用户选择的结果
     override fun onRequestPermissionsResult(
         requestCode: Int,

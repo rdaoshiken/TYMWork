@@ -2,8 +2,11 @@ package com.tymphay.tymwork.view
 
 import android.annotation.SuppressLint
 import android.bluetooth.*
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tymphay.tymwork.R
@@ -23,6 +26,7 @@ class ConnectBluetoothActivity :AppCompatActivity() {
     //Key:service name      Value:service uuid
     private val uuids : HashMap<String,String> = HashMap<String,String>()
     lateinit var gatt: BluetoothGatt
+    @RequiresApi(Build.VERSION_CODES.N)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +67,9 @@ class ConnectBluetoothActivity :AppCompatActivity() {
                         bt_connect.text=getString(R.string.connect_close)
                         getString(R.string.connect_success)
                     }
-                    BluetoothProfile.STATE_DISCONNECTED -> getString(R.string.connect_close)    //断开连接
+                    BluetoothProfile.STATE_DISCONNECTED -> {   //断开连接
+                        getString(R.string.connect_close)
+                    }
                     else -> "onConnectionStateChange: $status"
                 }
             )
@@ -105,6 +111,7 @@ class ConnectBluetoothActivity :AppCompatActivity() {
     }
 
     //页面视图的初始化，同时接收传递过来的device
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
     private fun initView(){
         supportActionBar?.apply {
@@ -122,12 +129,20 @@ class ConnectBluetoothActivity :AppCompatActivity() {
         tv_detail_device_address.text=(getString(R.string.device_address)+device?.address )  //MAC地址
 
         //连接按钮的点击事件
+        //连接
         bt_connect.setOnClickListener {
             if (bt_connect.text == getString(R.string.device_connect)){
                 //gatt连接,设置gatt回调
                 gatt = device?.connectGatt(this, false, bluetoothGattCallback) ?: gatt
-                if(bt_connect.text == "断开连接"){
-                    gatt.disconnect()   //断开连接
+                //断开连接
+                bt_connect.setOnClickListener {
+                    if(bt_connect.text == getString(R.string.connect_close)){
+                        gatt.disconnect()   //断开连接
+                        //将设备从已连接的列表中移除
+                        TymApplication.connectList?.removeIf {
+                            it.device.address == device?.address
+                        }
+                    }
                 }
             }
         }
@@ -151,5 +166,4 @@ class ConnectBluetoothActivity :AppCompatActivity() {
     //页面返回
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         if (item.itemId== android.R.id.home){ onBackPressed();true } else  false
-
 }

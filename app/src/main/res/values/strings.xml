@@ -14,9 +14,9 @@
     <string name="service_uuid">"服务UUID: "</string>
     <string name="service_discovered">"发现服务"</string>
     <string name="service_covered">"未发现服务"</string>
-    <string name="device_id_none">""设备ID: None":"</string>
+    <string name="device_id_none">"设备ID: None"</string>
     <string name="device_id">"设备ID: "</string>
     <string name="device_name">"设备名称: "</string>
     <string name="device_address">"MAC地址: "</string>
-    <string name="device_connect">"连接 "</string>
+    <string name="device_connect">"连接"</string>
 </resources>

@@ -20,12 +20,13 @@ import kotlin.collections.HashMap
 class ConnectBluetoothActivity :AppCompatActivity() {
 
     //状态缓存
-    var stringBuffer= StringBuffer()
+    private var stringBuffer= StringBuffer()
     //连接设备适配器
     private var connectDeviceAdapter : ConnectDeviceAdapter? =null
     //Key:service name      Value:service uuid
     private val uuids : HashMap<String,String> = HashMap<String,String>()
     lateinit var gatt: BluetoothGatt
+
     @RequiresApi(Build.VERSION_CODES.N)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +100,7 @@ class ConnectBluetoothActivity :AppCompatActivity() {
                                 tv_service_uuid.text = getString(R.string.service_uuid)+"$serviceUUID"
                                 return
                             }else{
-                                tv_service_name.text = getString(R.string.service_name)+"Unknown"
+                                tv_service_name.text = getString(R.string.service_name)+getString(R.string.unknown)
                                 tv_service_uuid.text= getString(R.string.service_uuid)+ "$serviceUUID"
                             }
                         }
@@ -115,7 +116,7 @@ class ConnectBluetoothActivity :AppCompatActivity() {
     @SuppressLint("MissingPermission")
     private fun initView(){
         supportActionBar?.apply {
-            title = "Connection"
+            title = getString(R.string.title)
             setDisplayHomeAsUpEnabled(true)
         }
 
@@ -159,11 +160,14 @@ class ConnectBluetoothActivity :AppCompatActivity() {
     }
 
     fun state(state: String)=runOnUiThread {
-        stringBuffer.append(state).append("\n")
+        stringBuffer.append(state).append(getString(R.string.line_feed))
         tv_state.text = stringBuffer.toString()
     }
 
     //页面返回
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        if (item.itemId== android.R.id.home){ onBackPressed();true } else  false
+        if (item.itemId== android.R.id.home){
+            onBackPressed()
+            true
+        } else  false
 }

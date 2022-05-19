@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             if (it.resultCode == Activity.RESULT_OK) showMsg(if (defaultAdapter.isEnabled) getString(R.string.ble_is_open) else getString(R.string.ble_is_close))
         }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         when(requestCode){
-            1 -> when(grantResults){
+            REQUEST_CODE -> when(grantResults){
                 intArrayOf(PackageManager.PERMISSION_GRANTED) -> {
                     openBluetooth()
                 }
@@ -114,8 +115,8 @@ class MainActivity : AppCompatActivity() {
         @SuppressLint("MissingPermission")
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             val address=result.device.address  //MAC地址
-            val name=result.device.name ?:"Unknown"  //设备名称
-            val scanTime=SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(Date())  //扫描时间
+            val name=result.device.name ?:getString(R.string.unknown)  //设备名称
+            val scanTime=SimpleDateFormat(getString(R.string.time)).format(Date())  //扫描时间
             if (addressList.size==0){
                 addressList.add(address)
                 addDeviceList(BleDevice(result.device,result.rssi,name,scanTime))
@@ -164,10 +165,12 @@ class MainActivity : AppCompatActivity() {
     //开始扫描蓝牙
     private fun scan() {
         if (!defaultAdapter.isEnabled) {    //蓝牙未打开
-            showMsg(getString(R.string.ble_is_close));return
+            showMsg(getString(R.string.ble_is_close))
+            return
         }
         if (isScanning) {    //正在扫描中
-            showMsg(getString(R.string.ble_scaning));return
+            showMsg(getString(R.string.ble_scaning))
+            return
         }
         isScanning = true
         addressList.clear()
@@ -180,7 +183,8 @@ class MainActivity : AppCompatActivity() {
     //停止扫描蓝牙
     private fun stopScan() {
         if (!defaultAdapter.isEnabled) {
-            showMsg(getString(R.string.ble_is_close));return
+            showMsg(getString(R.string.ble_is_close))
+            return
         }
         if (isScanning) {
             isScanning = false

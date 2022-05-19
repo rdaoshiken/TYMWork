@@ -19,4 +19,8 @@
     <string name="device_name">"设备名称: "</string>
     <string name="device_address">"MAC地址: "</string>
     <string name="device_connect">"连接"</string>
+    <string name="unknown">"Unknown"</string>
+    <string name="title">"Connection"</string>
+    <string name="line_feed">"\n"</string>
+    <string name="time">"yyyy-MM-dd HH:mm:ss.SSS"</string>
 </resources>

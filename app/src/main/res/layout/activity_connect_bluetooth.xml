@@ -14,19 +14,20 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="Device"
+        android:textColor="@color/black"
         android:textSize="15dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <TextView
         android:id="@+id/tv_detail_device_id"
@@ -34,12 +35,13 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="设备ID："
+        android:textColor="@color/black"
         android:textSize="15dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <TextView
         android:id="@+id/tv_detail_device_name"
@@ -47,12 +49,13 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="设备名称："
+        android:textColor="@color/black"
         android:textSize="15dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <TextView
         android:id="@+id/tv_detail_device_address"
@@ -60,25 +63,27 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="设备地址："
+        android:textColor="@color/black"
         android:textSize="15dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="Service"
+        android:textColor="@color/black"
         android:textSize="15dp"
         android:paddingTop="20dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <TextView
         android:id="@+id/tv_service_name"
@@ -86,12 +91,13 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="服务名称："
+        android:textColor="@color/black"
         android:textSize="15dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <TextView
         android:id="@+id/tv_service_uuid"
@@ -99,12 +105,13 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="服务UUID："
+        android:textColor="@color/black"
         android:textSize="15dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <Button
         android:id="@+id/bt_connect"
@@ -115,20 +122,21 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:text="已连接设备"
+        android:textColor="@color/black"
         android:textSize="15dp"
         android:paddingTop="20dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#EEE" />
+        android:background="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_device_connect"
@@ -137,7 +145,7 @@
         android:layout_below="@+id/progress_bar"
         android:overScrollMode="never"
         android:scrollbars="none"
-        android:layout_weight="2"/>
+        android:layout_weight="2" />
 
     <TextView
         android:id="@+id/tv_state"

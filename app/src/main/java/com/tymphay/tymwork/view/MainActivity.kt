@@ -70,16 +70,14 @@ class MainActivity : AppCompatActivity() {
             //Android12所要申请的权限列表
             val requestList = ArrayList<String>()
             //Android12及以上版本
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-                requestList.add(Manifest.permission.BLUETOOTH_SCAN)
-                requestList.add(Manifest.permission.BLUETOOTH_CONNECT)
-                requestList.add(Manifest.permission.BLUETOOTH_ADVERTISE)
-                if (ActivityCompat.checkSelfPermission(this,requestList[0]) != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this,requestList[1]) != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this,requestList[2]) != PackageManager.PERMISSION_GRANTED ) {
-                    ActivityCompat.requestPermissions(this, arrayOf(requestList[0], requestList[1], requestList[2]),REQUEST_CODE)
-                }
-            }
+            requestList.add(Manifest.permission.BLUETOOTH_SCAN)
+            requestList.add(Manifest.permission.BLUETOOTH_CONNECT)
+            requestList.add(Manifest.permission.BLUETOOTH_ADVERTISE)
+            if (ActivityCompat.checkSelfPermission(this,requestList[0]) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,requestList[1]) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,requestList[2]) == PackageManager.PERMISSION_GRANTED ) { openBluetooth()
+            }else  ActivityCompat.requestPermissions(this, arrayOf(requestList[0], requestList[1], requestList[2]),REQUEST_CODE)
+
         }
     }
 

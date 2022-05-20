@@ -1,45 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".view.MainActivity">
 
-    <LinearLayout
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible" />
 
-        <EditText
-            android:id="@+id/et_input1"
-            android:layout_height="30pt"
-            android:layout_width="30pt"
-            android:layout_weight="1"
-            android:background="@color/teal_200"
-            android:inputType="number"
-            android:gravity="center"
-            android:layout_marginLeft="2pt"
-            android:layout_marginRight="2pt"/>
-
-        <EditText
-            android:id="@+id/et_input2"
-            android:layout_height="30pt"
-            android:layout_width="30pt"
-            android:layout_weight="1"
-            android:background="@color/teal_200"
-            android:inputType="number"
-            android:gravity="center"
-            android:layout_marginRight="2pt"/>
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_device"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_below="@+id/progress_bar"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
 
-    <include layout="@layout/bottom_navbar"/>
+    <LinearLayout
+        android:id="@+id/lay_no_equipment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/progress_bar"
+        android:gravity="center"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/ic_widgets" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="空空如也~" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:text="Scanning"
+        android:textColor="@color/white"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:icon="@drawable/ic_add"
+        app:iconTint="@color/white" />
+
+</RelativeLayout>

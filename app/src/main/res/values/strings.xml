@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Calculator</string>
+    <string name="ble_is_close">"蓝牙未打开"</string>
+    <string name="ble_is_open">"蓝牙已打开"</string>
+    <string name="ble_ready_scan">"蓝牙已打开，可以开始扫描设备了"</string>
+    <string name="permission_is_close">"权限未打开"</string>
+    <string name="ble_scaning">"正在扫描中..."</string>
+    <string name="ble_start_scan">开始扫描</string>
+    <string name="device">device</string>
+    <string name="connect_success">"连接成功"</string>
+    <string name="connect_fail">"连接失败"</string>
+    <string name="connect_close">"断开连接"</string>
+    <string name="service_name">"服务名称: "</string>
+    <string name="service_uuid">"服务UUID: "</string>
+    <string name="service_discovered">"发现服务"</string>
+    <string name="service_covered">"未发现服务"</string>
+    <string name="device_id_none">"设备ID: None"</string>
+    <string name="device_id">"设备ID: "</string>
+    <string name="device_name">"设备名称: "</string>
+    <string name="device_address">"MAC地址: "</string>
+    <string name="device_connect">"连接"</string>
+    <string name="unknown">"Unknown"</string>
+    <string name="title">"Connection"</string>
+    <string name="line_feed">"\n"</string>
+    <string name="time">"yyyy-MM-dd HH:mm:ss.SSS"</string>
 </resources>
